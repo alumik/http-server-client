@@ -1,4 +1,4 @@
-from socket import *
+from socket import AF_INET, SOCK_STREAM, socket, timeout
 import sys
 import threading
 
@@ -50,6 +50,8 @@ def new_service(connection_socket, address, counter):
         print('[#' + str(counter) + '] IndexError!')
     except timeout:
         print('[#' + str(counter) + '] Timeout!')
+    except ConnectionResetError:
+        print('[#' + str(counter) + '] ConnectionResetError!')
     finally:
         connection_socket.close()
 
