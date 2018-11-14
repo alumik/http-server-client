@@ -42,6 +42,8 @@ def new_service(connection_socket, address, counter):
         connection_socket.send('HTTP/1.1 200 OK\r\n\r\n'.encode())
         connection_socket.send(output_data)
         connection_socket.send('\r\n'.encode())
+    except ConnectionResetError:
+        print('[#' + str(counter) + '] ConnectionResetError!')
     except IOError:
         connection_socket.send('HTTP/1.1 404 Not Found\r\n\r\n'.encode())
         connection_socket.send('404 Not Found'.encode())
@@ -50,8 +52,6 @@ def new_service(connection_socket, address, counter):
         print('[#' + str(counter) + '] IndexError!')
     except timeout:
         print('[#' + str(counter) + '] Timeout!')
-    except ConnectionResetError:
-        print('[#' + str(counter) + '] ConnectionResetError!')
     finally:
         connection_socket.close()
 
