@@ -1,6 +1,7 @@
-from socket import AF_INET, SOCK_STREAM, socket, timeout
 import sys
 import threading
+
+from socket import AF_INET, SOCK_STREAM, socket, timeout
 
 
 def main():
@@ -10,9 +11,9 @@ def main():
     srv_socket.listen(5)
     con_number = 0
 
-    print('Starting up http-server, serving ./' + www_root + '/')
+    print(f'Starting up http-server, serving ./{www_root}/')
     print('Available on:')
-    print('  http://' + host + ':' + str(srv_port))
+    print(f'  http://{host}:{srv_port}')
     print('Hit CTRL-BREAK to stop the server')
 
     while True:
@@ -24,9 +25,6 @@ def main():
         )
         thread.start()
 
-    srv_socket.close()
-    sys.exit()
-
 
 def get_config():
     args = sys.argv[1:]
@@ -36,32 +34,26 @@ def get_config():
 
 
 def new_connection(con_socket, address, con_number, www_root):
-    print(
-        '[#' + str(con_number) + '] ' +
-        'Connected by: ' + address[0] + ':' + str(address[1])
-    )
+    print(f'[#{con_number}] Connected by: {address[0]}:{address[1]}')
 
     try:
         con_socket.settimeout(600)
         message = con_socket.recv(2048).decode().split()
-        print(
-            '[#' + str(con_number) + '] ' +
-            'Request: ' + message[0] + ' ' + message[1]
-        )
-        output_data = open(www_root + '/' + message[1][1:], 'rb').read()
+        print(f'[#{con_number}] Request: {message[0]} {message[1]}')
+        output_data = open(f'{www_root}/{message[1][1:]}', 'rb').read()
 
         con_socket.send('HTTP/1.1 200 OK\r\n\r\n'.encode())
         con_socket.send(output_data)
         con_socket.send('\r\n'.encode())
     except ConnectionResetError:
-        print('[#' + str(con_number) + '] ConnectionResetError!')
+        print(f'[#{con_number}] ConnectionResetError!')
+    except timeout:
+        print(f'[#{con_number}] Timeout!')
     except IOError:
         con_socket.send('HTTP/1.1 404 Not Found\r\n\r\n'.encode())
         con_socket.send('404 Not Found\r\n'.encode())
     except IndexError:
-        print('[#' + str(con_number) + '] IndexError!')
-    except timeout:
-        print('[#' + str(con_number) + '] Timeout!')
+        print(f'[#{con_number}] IndexError!')
     finally:
         con_socket.close()
 
