@@ -7,7 +7,13 @@ from socket import AF_INET, SOCK_STREAM, socket, timeout
 def main():
     host, srv_port, www_root = get_config()
     srv_socket = socket(AF_INET, SOCK_STREAM)
-    srv_socket.bind((host, srv_port))
+
+    try:
+        srv_socket.bind((host, srv_port))
+    except OSError:
+        print('Server error! Please choose another port number and try again.')
+        sys.exit(-1)
+
     srv_socket.listen(5)
     con_number = 0
 
