@@ -31,7 +31,7 @@ def main():
 def get_config():
     args = sys.argv[1:]
     if not args:
-        return 'localhost', 8080, 'www'
+        return 'localhost', 8080, 'web'
     return args[0], int(args[1]), args[2]
 
 
