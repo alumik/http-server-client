@@ -1,5 +1,9 @@
 # http-server & http-client
 
+![version-1.0.0](https://img.shields.io/badge/version-1.0.0-blue)
+![python->=3.6](https://img.shields.io/badge/python->=3.6-blue?logo=python&logoColor=white)
+![GitHub License](https://img.shields.io/github/license/alumik/http-server-client)
+
 简易的 HTTP 服务器与客户端。
 
 ## http-server
