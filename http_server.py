@@ -56,6 +56,7 @@ def new_connection(con_socket, address, con_number, www_root):
     except timeout:
         print(f'[#{con_number}] Timeout!')
     except IOError:
+        print(f'[#{con_number}] File not found!')
         con_socket.send('HTTP/1.1 404 Not Found\r\n\r\n'.encode())
         con_socket.send('404 Not Found\r\n'.encode())
     except IndexError:
